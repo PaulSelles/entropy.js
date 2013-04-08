@@ -1,4 +1,4 @@
 entropy.js
 ==========
 
-TBD
+Collect user entropy.
