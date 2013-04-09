@@ -17,9 +17,16 @@ describe("SHA1", function () {
 		expect(sha1.rightRotate(0x1,1,1)).toEqual(0x1);
 		expect(sha1.rightRotate(0x1,1,4)).toEqual(0x8);
 		expect(sha1.rightRotate(0x0000000F,8,32)).toEqual(0x0F000000);
+		expect(sha1.rightRotate(0x0000000F,4)).toEqual(0xF0000000);
+		expect(sha1.rightRotate(0xF000000F,37)).toEqual(0x7F800000);
+	});
 
-		// This test produces the correct bitwise value but an incorrect interger (uint32 vs int32).
-		// I'll just have to get back to it.
-		expect(sha1.rightRotate(0x0000000F,4,32)).toEqual(0xF0000000);
+	it("should left rotate", function() {
+		expect(sha1.leftRotate(0x1,1,1)).toEqual(0x1);
+		expect(sha1.leftRotate(0x8,1,4)).toEqual(0x1);
+		expect(sha1.leftRotate(0x0F000000,8,32)).toEqual(0x0000000F);
+		expect(sha1.leftRotate(0xF0000000,4)).toEqual(0x0000000F);
+		expect(sha1.leftRotate(0x7F800000,5)).toEqual(0xF000000F);
+		expect(sha1.leftRotate(0x7F800000,37)).toEqual(0xF000000F);
 	});
 });
