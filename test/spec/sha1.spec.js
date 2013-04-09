@@ -31,6 +31,35 @@ describe("SHA1", function () {
 	});
 
 	it("sould have modulo 512 bit preProcessedMessage", function() {
-		expect(sha1.encode("").length * 8).toEqual(512);
+
+		blocks = sha1.encode("");
+		expect(sha1.preProcessedMessage.length * 8).toEqual(512);
+
+		block = sha1.encode("000000000000000000000000000000000000000000000000000000000000");
+		expect(sha1.preProcessedMessage.length * 8).toEqual(512*2);
+	});
+
+	// Still need to test for message lengths greater than 448 bits
+	it("should distribute intial 16 blocks properly", function() {
+		
+		var blocks = sha1.encode("");
+
+	 	expect(blocks.length).toEqual(1);
+		expect(blocks[0][0]).toEqual(0x80000000);
+		expect(blocks[0][1]).toEqual(0x00000000);
+		expect(blocks[0][15]).toEqual(0x00000000);
+		expect(blocks[0][16]).toEqual(undefined);
+		expect(blocks[1]).toEqual(undefined);
+
+		var blocks = sha1.encode("P@0P@0P@0P@0");
+	 	expect(blocks.length).toEqual(1);
+		expect(blocks[0][0]).toEqual(0x50403050);
+		expect(blocks[0][1]).toEqual(0x40305040);
+		expect(blocks[0][2]).toEqual(0x30504030);
+		expect(blocks[0][3]).toEqual(0x80000000);
+		expect(blocks[0][15]).toEqual(0x00000060);
+		expect(blocks[0][16]).toEqual(undefined);
+		expect(blocks[1]).toEqual(undefined);
+
 	});
 });
