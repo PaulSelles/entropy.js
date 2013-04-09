@@ -29,4 +29,8 @@ describe("SHA1", function () {
 		expect(sha1.leftRotate(0x7F800000,5)).toEqual(0xF000000F);
 		expect(sha1.leftRotate(0x7F800000,37)).toEqual(0xF000000F);
 	});
+
+	it("sould have modulo 512 bit preProcessedMessage", function() {
+		expect(sha1.encode("").length * 8).toEqual(512);
+	});
 });
