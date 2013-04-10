@@ -46,7 +46,7 @@ describe("SHA1", function () {
 		expect(blocks[0][0]).toEqual(0x80000000);
 		expect(blocks[0][1]).toEqual(0x00000000);
 		expect(blocks[0][15]).toEqual(0x00000000);
-		expect(blocks[0][16]).toEqual(undefined);
+		expect(blocks[0][80]).toEqual(undefined);
 		expect(blocks[1]).toEqual(undefined);
 
 		blocks = sha1.encode("P@0P@0P@0P@0");
@@ -56,13 +56,13 @@ describe("SHA1", function () {
 		expect(blocks[0][2]).toEqual(0x30504030);
 		expect(blocks[0][3]).toEqual(0x80000000);
 		expect(blocks[0][15]).toEqual(0x00000060);
-		expect(blocks[0][16]).toEqual(undefined);
+		expect(blocks[0][80]).toEqual(undefined);
 		expect(blocks[1]).toEqual(undefined);
 
 		blocks = sha1.encode("00000000000000000000000000000000000000000000000000000000");
 		expect(blocks.length).toEqual(2);
 		expect(blocks[1][15]).toEqual(448);
-		expect(blocks[1][16]).toEqual(undefined);
+		expect(blocks[1][80]).toEqual(undefined);
 		expect(blocks[2]).toEqual(undefined);
 	});
 });
