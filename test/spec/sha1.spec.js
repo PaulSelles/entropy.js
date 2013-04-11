@@ -4,15 +4,6 @@ describe("SHA1", function () {
 		sha1 = new SHA1();
 	});
 
-	it("should contain initialized variables", function () {
-
-		expect(sha1.h0).toEqual(0x67452301);	
-		expect(sha1.h1).toEqual(0xEFCDAB89);
-		expect(sha1.h2).toEqual(0x98BADCFE);
-		expect(sha1.h3).toEqual(0x10325476);
-		expect(sha1.h4).toEqual(0xC3D2E1F0);
-    });
-
 	it("should right rotate", function() {
 		expect(sha1.rightRotate(0x1,1,1)).toEqual(0x1);
 		expect(sha1.rightRotate(0x1,1,4)).toEqual(0x8);
@@ -37,7 +28,7 @@ describe("SHA1", function () {
 		block = sha1.encode("000000000000000000000000000000000000000000000000000000000000");
 		expect(sha1.preProcessedMessage.length * 8).toEqual(512*2);
 	});
-
+/*
 	it("should distribute intial 16 blocks properly", function() {
 		
 		var blocks = sha1.encode("");
@@ -64,5 +55,12 @@ describe("SHA1", function () {
 		expect(blocks[1][15]).toEqual(448);
 		expect(blocks[1][80]).toEqual(undefined);
 		expect(blocks[2]).toEqual(undefined);
+	});
+*/
+	it("should hash properly", function () {
+		expect(sha1.encode("").length).toEqual(160/4);
+		expect(sha1.encode("")).toEqual("da39a3ee5e6b4b0d3255bfef95601890afd80709");
+		expect(sha1.encode("The quick brown fox jumps over the lazy dog")).toEqual("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12");
+		expect(sha1.encode("The quick brown fox jumps over the lazy cog")).toEqual("de9f2c7f d25e1b3a fad3e85a 0bd17d9b 100db4b3");
 	});
 });
