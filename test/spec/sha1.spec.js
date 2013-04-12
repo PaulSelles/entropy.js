@@ -5,20 +5,20 @@ describe("SHA1", function () {
 	});
 
 	it("should right rotate", function() {
-		expect(sha1.rightRotate(0x1,1,1)).toEqual(0x1);
-		expect(sha1.rightRotate(0x1,1,4)).toEqual(0x8);
-		expect(sha1.rightRotate(0x0000000F,8,32)).toEqual(0x0F000000);
-		expect(sha1.rightRotate(0x0000000F,4)).toEqual(0xF0000000);
-		expect(sha1.rightRotate(0xF000000F,37)).toEqual(0x7F800000);
+		expect(window.rightRotate(0x1,1,1)).toEqual(0x1);
+		expect(window.rightRotate(0x1, 1, 4)).toEqual(0x8);
+		expect(window.rightRotate(0x0000000F, 8, 32)).toEqual(0x0F000000);
+		expect(window.rightRotate(0x0000000F, 4)).toEqual(0xF0000000);
+		expect(window.rightRotate(0xF000000F, 37)).toEqual(0x7F800000);
 	});
 
 	it("should left rotate", function() {
-		expect(sha1.leftRotate(0x1,1,1)).toEqual(0x1);
-		expect(sha1.leftRotate(0x8,1,4)).toEqual(0x1);
-		expect(sha1.leftRotate(0x0F000000,8,32)).toEqual(0x0000000F);
-		expect(sha1.leftRotate(0xF0000000,4)).toEqual(0x0000000F);
-		expect(sha1.leftRotate(0x7F800000,5)).toEqual(0xF000000F);
-		expect(sha1.leftRotate(0x7F800000,37)).toEqual(0xF000000F);
+	    expect(window.leftRotate(0x1, 1, 1)).toEqual(0x1);
+	    expect(window.leftRotate(0x8, 1, 4)).toEqual(0x1);
+		expect(window.leftRotate(0x0F000000, 8, 32)).toEqual(0x0000000F);
+		expect(window.leftRotate(0xF0000000, 4)).toEqual(0x0000000F);
+		expect(window.leftRotate(0x7F800000, 5)).toEqual(0xF000000F);
+		expect(window.leftRotate(0x7F800000, 37)).toEqual(0xF000000F);
 	});
 
 	it("sould have modulo 512 bit preProcessedMessage", function() {
@@ -63,10 +63,43 @@ describe("SHA1", function () {
 	    expect(blocks[2]).toEqual(undefined);
 	});
 
-	//it("should hash properly", function () {
-	//	expect(sha1.encode("").length).toEqual(160/4);
-	//	expect(sha1.encode("")).toEqual("da39a3ee5e6b4b0d3255bfef95601890afd80709");
-	//	expect(sha1.encode("The quick brown fox jumps over the lazy dog")).toEqual("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12");
-	//	expect(sha1.encode("The quick brown fox jumps over the lazy cog")).toEqual("de9f2c7f d25e1b3a fad3e85a 0bd17d9b 100db4b3");
-	//});
+	it("should hash F propertly", function () {
+
+	    var b = 0xEFCDAB89;
+	    var c = 0x98BADCFE;
+	    var d = 0x10325476;
+	    
+	    expect(window.F(0, b, c, d)).toEqual(2562383102);
+		expect(window.F(19, b, c, d)).toEqual(2562383102);
+		expect(window.F(20, b, c, d)).toEqual(1732584193);
+		expect(window.F(39, b, c, d)).toEqual(1732584193);
+		expect(window.F(40, b, c, d)).toEqual(2562383102);
+		expect(window.F(59, b, c, d)).toEqual(2562383102);
+		expect(window.F(60, b, c, d)).toEqual(1732584193);
+		expect(window.F(79, b, c, d)).toEqual(1732584193);
+
+	});
+
+	it("should retieve K", function() {
+		var k0 = 0x5A827999;
+		var k1 = 0x6ED9EBA1;
+		var k2 = 0x8F1BBCDC;
+		var k3 = 0xCA62C1D6;
+
+		expect(window.K(0)).toEqual(k0);
+		expect(window.K(19)).toEqual(k0);
+		expect(window.K(20)).toEqual(k1);
+		expect(window.K(39)).toEqual(k1);
+		expect(window.K(40)).toEqual(k2);
+		expect(window.K(59)).toEqual(k2);
+		expect(window.K(60)).toEqual(k3);
+		expect(window.K(79)).toEqual(k3);
+	});
+
+	it("should hash properly", function () {
+		expect(sha1.hash("").length).toEqual(160/4);
+		expect(sha1.hash("")).toEqual("da39a3ee5e6b4b0d3255bfef95601890afd80709");
+		expect(sha1.hash("The quick brown fox jumps over the lazy dog")).toEqual("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12");
+		expect(sha1.hash("The quick brown fox jumps over the lazy cog")).toEqual("de9f2c7f d25e1b3a fad3e85a 0bd17d9b 100db4b3");
+	});
 });
