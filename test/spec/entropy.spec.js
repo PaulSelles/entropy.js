@@ -50,26 +50,23 @@ describe("Entropy", function () {
             entropy = new Entropy();
         });
 
-        it("should trigger event on keydown for default document", function () {
+        it("should not allow duplicate key presses", function () {
 
-            // enable a keyboard entropy and spy on KeyDownCalled
-            entropy.enableKeyboardEntropy();
-            spyOn(entropy, "keyDown");
-                
-            // Ultimately would like to use the event listener for this test.
-            //keyboardEvent = document.createEvent("KeyboardEvent");
-            //keyboardEvent.initKeyboardEvent("keydown", true, true, document.defaultView, false, false, false, false, false);
-            //keyboardEvent.keyCode = 32;
-            //document.dispatchEvent(keyboardEvent);
+			var e = {
+            	keyCode: 50 
+			};
 
-            // Spoof out keyboard event.
-            var event = KeyboardEvent
-            event.keyCode = entropyHelper.testKeyCode;
+			entropy.keyDown(e);
+			var arrayLength = entropy.entropyArray.Length;
+			expect(arrayLength).toEqual(entropy.entropyArray.Length);
 
-            // Call the keyDown event
-            entropy.keyDown(event);
-            expect(entropy.keyDown).toHaveBeenCalled();
-        });
+			entropy.keyDown(e);
+			expect(arrayLength).toEqual(entropy.entropyArray.Length);
+			entropy.keyDown(e);
+			expect(arrayLength).toEqual(entropy.entropyArray.Length);
+			entropy.keyDown(e);
+			expect(arrayLength).toEqual(entropy.entropyArray.Length);
+		});
 
         // See comments above
         it("should trigger event on keyup for default document", function () {
