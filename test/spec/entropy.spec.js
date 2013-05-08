@@ -82,22 +82,6 @@ describe("Entropy", function () {
             entropy.keyUp(event);
             expect(entropy.keyUp).toHaveBeenCalled();
         });
-		
-		// We don't have custom lenght enabled yet
-		it("should retrun a 160 bit hash", function () {
-			entropy.enableKeyboardEntropy();
-
-			// Expecting 40 bytes 
-			entropy.setBitLength(160);
-			entropy.reset();
-
-			// Send a string 40 chars long
-			entropyHelper.typeMessage(entropy, "0123456789012345678901234567890123456789");
-			expect(entropy.isReady()).toEqual(true);
-			expect(entropy.hash.length).toEqual(40);	
-		});
-
-		// We don't have custom lenght enabled yet
 		it("should retrun a 128 bit hash", function () {
 			entropy.enableKeyboardEntropy();
 
@@ -111,8 +95,21 @@ describe("Entropy", function () {
 			expect(entropy.hash.length).toEqual(32);	
 		});
 		
+		it("should retrun a 160 bit hash", function () {
+			entropy.enableKeyboardEntropy();
+
+			// Expecting 40 bytes 
+			entropy.setBitLength(160);
+			entropy.reset();
+
+			// Send a string 40 chars long
+			entropyHelper.typeMessage(entropy, "0123456789012345678901234567890123456789");
+			expect(entropy.isReady()).toEqual(true);
+			expect(entropy.hash.length).toEqual(40);	
+		});
+
 		
-		// We don't have custom lenght enabled yet
+		
 		it("should retrun a 256 bit hash", function () {
 			entropy.enableKeyboardEntropy();
 
@@ -126,7 +123,6 @@ describe("Entropy", function () {
 			expect(entropy.hash.length).toEqual(64);	
 		});
 		
-		// We don't have custom lenght enabled yet
 		it("should retrun a 320 bit hash", function () {
 			entropy.enableKeyboardEntropy();
 
@@ -140,7 +136,6 @@ describe("Entropy", function () {
 			expect(entropy.hash.length).toEqual(80);	
 		});
 
-		// We don't have custom lenght enabled yet
 		it("should retrun a 512 bit hash", function () {
 			entropy.enableKeyboardEntropy();
 
@@ -150,6 +145,19 @@ describe("Entropy", function () {
 
 			// Send a string 128 chars long
 			entropyHelper.typeMessage(entropy, "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567");
+			expect(entropy.isReady()).toEqual(true);
+			expect(entropy.hash.length).toEqual(128);	
+		});
+
+		it("should retrun a 512 bit hash with a larger than needed string", function () {
+			entropy.enableKeyboardEntropy();
+
+			// Expecting 128 bytes 
+			entropy.setBitLength(512);
+			entropy.reset();
+
+			// Send a string 140 chars long
+			entropyHelper.typeMessage(entropy, "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 			expect(entropy.isReady()).toEqual(true);
 			expect(entropy.hash.length).toEqual(128);	
 		});
