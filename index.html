@@ -5,12 +5,18 @@
   <title>Example file entroy.js</title>
 
   <script type="text/javascript" src="lib/entropy.js"></script>
+  <script type="text/javascript" src="lib/sha1.js"></script>
   <script type="text/javascript">
 
       Entropy: Entropy;
-
-      var entropy = new Entropy(256);
+      entropy = new Entropy();
+      entropy.isReadyListener(function() {
+		window.alert(entropy.readHash());
+		entropy.reset();
+	  });
       entropy.enableKeyboardEntropy();
+	  entropy.setBitLength(128);
+      entropy.setResolution(0.5);
 
   </script>
 

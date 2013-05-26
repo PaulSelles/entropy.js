@@ -43,7 +43,7 @@ describe("Entropy", function () {
             expect(entropy.getBitLength()).toEqual(entropyHelper.defaultBitLength);
         });
     });
-
+/*
     describe("Keyboard entropy", function () {
 
         beforeEach(function () {
@@ -161,5 +161,6 @@ describe("Entropy", function () {
 			expect(entropy.isReady()).toEqual(true);
 			expect(entropy.hash.length).toEqual(128);	
 		});
-    	});
+    });
+*/
 });
