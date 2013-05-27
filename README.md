@@ -18,7 +18,7 @@ Usage
 *Source*
 
     <!-- include both sha1.js and entropy.js -->
-    <script type="text/javascript" src="sha1.js"></script>
+    <script type="text/javascript" src="entropy.js"></script>
     <script type="text/javascript" src="sha1.js"></script>
   
 *Functions*
@@ -35,7 +35,7 @@ Usage
     entropy.disableKeyboardEntropy();
 
     // Set and get desired bit length (to the next nibble)
-    entropy.setBitLength();
+    entropy.setBitLength(bitLength);
     entropy.getBitLength();
 
     // Set byte resolution
