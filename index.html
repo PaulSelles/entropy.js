@@ -2,16 +2,35 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <style type="text/css">
+	pre { font-family: monospace; color: #f6f3e8; background-color: #000000; width: 750px; }
+	.lnr { color: #3d3d3d; background-color: #000000; }
+	.Keyword { color: #96cbfe; }
+	.Title { color: #f6f3e8; font-weight: bold; }
+	.PreProc { color: #96cbfe; }
+	.Operator { color: #ccffcc; }
+	.Special { color: #ff8000; }
+	.Identifier { color: #c6c5fe; }
+	.String { color: #a8ff60; }
+	.Type { color: #ffffb6; }
+	.Statement { color: #6699cc; }
+	.Function { color: #ffd2a7; }
+	.Comment { color: #7c7c7c; }
+</style>
+  
   <title>Example file entroy.js</title>
 
   <script type="text/javascript" src="lib/entropy.js"></script>
   <script type="text/javascript" src="lib/sha1.js"></script>
   <script type="text/javascript">
-
       Entropy: Entropy;
       entropy = new Entropy();
       entropy.isReadyListener(function() {
-		window.alert(entropy.readHash());
+	    var node = document.createElement('p');
+		var text = document.createTextNode('0x' + entropy.readHash());
+		node.appendChild(text);
+		
+		document.getElementById('random').appendChild(node);
 		entropy.reset();
 	  });
       entropy.enableKeyboardEntropy();
@@ -19,9 +38,167 @@
       entropy.setResolution(0.5);
 
   </script>
-
 </head>
 
 <body>
+  <canvas id="MyCanvas"></canvas>
+  <script type="text/javascript">
+	  var canvas = document.getElementById('MyCanvas');
+      var context = canvas.getContext('2d');
+      var squareSize = 15;
+      var bannerSquareHeight = 10;
+
+      canvas.setAttribute('width', window.innerWidth);
+      canvas.setAttribute('height', squareSize*bannerSquareHeight);
+
+      drawBox = function (x, y, width, length, fillStyle) {
+
+        context.beginPath();
+
+		context.stroke();
+		context.rect(x, y, width, length);
+    	context.fillStyle = fillStyle;
+	    context.fill();
+
+   		context.closePath();
+	  }
+
+	  fillSquares = function () {
+	    for (var i=0; i<canvas.width/squareSize; i++) {
+		  for (var j=0; j<squareSize; j++) {
+		    fillStyle = '#' + (+Math.floor((Math.random()*0XFFFFFF)+1)).toString(16);
+		    drawBox(squareSize*i,squareSize*j,squareSize,squareSize,fillStyle);
+		  }
+		}
+      }
+	  
+	  title = function(titleString)
+	  {
+		font = 3*squareSize*bannerSquareHeight/5
+	    context.font = 'bold ' + font + 'px Bookman Old Style';
+		context.fillText(titleString, squareSize*bannerSquareHeight/2, squareSize*bannerSquareHeight/2);
+		context.fillSytle = 'white';
+		context.lineWidth = 2;
+		context.strokeText(titleString, squareSize*bannerSquareHeight/2, squareSize*bannerSquareHeight/2);
+		context.strokeStyle = 'black';
+	  }
+
+      fillSquares();
+	  title("entropy.js");
+  </script>
+
+<blockquote>
+<h3>Collect user entropy from your browser window to generate random numbers.</h4>
+</blockquote>
+
+<h3>Free 128bit Random Numbers</h3>
+<blockquote>
+<p>Go ahead, just type away!</p>
+</blockquote>
+
+<blockquote>
+<pre id="random">
+</pre>
+</blockquote>
+<h2>About</h2>
+
+<ul>
+<li>entropy.js allows you to collect user entropy from your browser window.</li>
+<li>Currently only keyboard entropy generation is supported</li>
+<li>Entropy generated through keycode and timestamp hashing</li>
+<li>Output as hex string</li>
+<li>Not intended for encryption or security, entropy.js carries no guarantees or warrantees</li>
+</ul>
+
+<h2>Usage</h2>
+
+<p><em>Source</em></p>
+
+<blockquote>
+<pre>
+<span class="lnr"> 1 </span><span class="Comment">&lt;!</span><span class="Comment">-- include both sha1.js and entropy.js --</span><span class="Comment">&gt;</span>
+<span class="lnr"> 2 </span><span class="Function">&lt;</span><span class="Statement">script</span><span class="Function"> </span><span class="Type">type</span><span class="Function">=</span><span class="String">&quot;text/javascript&quot;</span><span class="Function"> </span><span class="Type">src</span><span class="Function">=</span><span class="String">&quot;entropy.js&quot;</span><span class="Function">&gt;</span><span class="Identifier">&lt;/</span><span class="Statement">script</span><span class="Identifier">&gt;</span>
+<span class="lnr"> 3 </span><span class="Function">&lt;</span><span class="Statement">script</span><span class="Function"> </span><span class="Type">type</span><span class="Function">=</span><span class="String">&quot;text/javascript&quot;</span><span class="Function"> </span><span class="Type">src</span><span class="Function">=</span><span class="String">&quot;sha1.js&quot;</span><span class="Function">&gt;</span><span class="Identifier">&lt;/</span><span class="Statement">script</span><span class="Identifier">&gt;</span>
+</pre>
+</blockquote>
+
+<p><em>Functions</em></p>
+
+<blockquote>
+<pre>
+<span class="lnr"> 1 </span><span class="Comment">// Constructor</span>
+<span class="lnr"> 2 </span><span class="Identifier">var</span> entropy = <span class="Operator">new</span> Entropy();
+<span class="lnr"> 3 </span><span class="Identifier">var</span> entropy = <span class="Operator">new</span> Entropy(bitLength);
+<span class="lnr"> 4 </span><span class="Identifier">var</span> entropy = <span class="Operator">new</span> Entropy(bitLenght, resolution);
+<span class="lnr"> 5 </span>
+<span class="lnr"> 6 </span><span class="Comment">// Enabling keyboard entropy</span>
+<span class="lnr"> 7 </span>entropy.enableKeyboardEntropy();
+<span class="lnr"> 8 </span>
+<span class="lnr"> 9 </span><span class="Comment">// Disabling keyboard entropy</span>
+<span class="lnr">10 </span>entropy.disableKeyboardEntropy();
+<span class="lnr">11 </span>
+<span class="lnr">12 </span><span class="Comment">// Set and get desired bit length (to the next nibble)</span>
+<span class="lnr">13 </span>entropy.setBitLength(bitLength);
+<span class="lnr">14 </span>entropy.getBitLength();
+<span class="lnr">15 </span>
+<span class="lnr">16 </span><span class="Comment">// Set byte resolution</span>
+<span class="lnr">17 </span><span class="Comment">// Keycode bytes to output entropy bytes</span>
+<span class="lnr">18 </span><span class="Comment">// It is recommended to use a resolution no higher than 0.5</span>
+<span class="lnr">19 </span>entropy.setResolution(resolution);
+<span class="lnr">20 </span>entropy.setByteResolution(resolution);
+<span class="lnr">21 </span>
+<span class="lnr">22 </span><span class="Comment">// Set bit resolution</span>
+<span class="lnr">23 </span><span class="Comment">// Keycode bits to output entropy bits</span>
+<span class="lnr">24 </span><span class="Comment">// It is recommended to use a resolution no higher than 4</span>
+<span class="lnr">25 </span>entropy.setBitResolution(resolution);
+<span class="lnr">26 </span>
+<span class="lnr">27 </span><span class="Comment">// Reset entropy collection (this will dump all currently collected keystrokes)</span>
+<span class="lnr">28 </span>entropy.reset();
+<span class="lnr">29 </span>
+<span class="lnr">30 </span><span class="Comment">// Test is hashed output is ready to be read</span>
+<span class="lnr">31 </span>entropy.isReady();
+<span class="lnr">32 </span>
+<span class="lnr">33 </span><span class="Comment">// Create a listener that will trigger when hashed output is ready</span>
+<span class="lnr">34 </span>entropy.isReadyListener(isReadyCallbackFunction);
+<span class="lnr">35 </span>
+<span class="lnr">36 </span><span class="Comment">// Read entropy output</span>
+<span class="lnr">37 </span>entropy.readHash();
+</pre>
+</blockquote>
+
+<p><em>Example</em></p>
+
+<blockquote><p>Simple html file to produce 128bits of entropy from 32 key strokes</p></blockquote>
+
+<blockquote>
+<pre>
+<span class="lnr"> 1 </span><span class="Comment">&lt;!DOCTYPE HTML&gt;</span>
+<span class="lnr"> 2 </span><span class="Function">&lt;</span><span class="Statement">html</span><span class="Function">&gt;</span>
+<span class="lnr"> 3 </span>  <span class="Function">&lt;</span><span class="Statement">head</span><span class="Function">&gt;</span>
+<span class="lnr"> 4 </span><span class="PreProc">    </span><span class="Function">&lt;</span><span class="Statement">meta</span><span class="Function"> </span><span class="Type">http-equiv</span><span class="Function">=</span><span class="String">&quot;Content-Type&quot;</span><span class="Function"> </span><span class="Type">content</span><span class="Function">=</span><span class="String">&quot;text/html; charset=UTF-8&quot;</span><span class="Function">&gt;</span>
+<span class="lnr"> 5 </span><span class="PreProc">    </span><span class="Function">&lt;</span><span class="Statement">title</span><span class="Function">&gt;</span><span class="Title">Example file entroy.js</span><span class="Identifier">&lt;/</span><span class="Statement">title</span><span class="Identifier">&gt;</span>
+<span class="lnr"> 6 </span>
+<span class="lnr"> 7 </span><span class="PreProc">    </span><span class="Function">&lt;</span><span class="Statement">script</span><span class="Function"> </span><span class="Type">type</span><span class="Function">=</span><span class="String">&quot;text/javascript&quot;</span><span class="Function"> </span><span class="Type">src</span><span class="Function">=</span><span class="String">&quot;lib/entropy.js&quot;</span><span class="Function">&gt;</span><span class="Identifier">&lt;/</span><span class="Statement">script</span><span class="Identifier">&gt;</span>
+<span class="lnr"> 8 </span><span class="PreProc">    </span><span class="Function">&lt;</span><span class="Statement">script</span><span class="Function"> </span><span class="Type">type</span><span class="Function">=</span><span class="String">&quot;text/javascript&quot;</span><span class="Function"> </span><span class="Type">src</span><span class="Function">=</span><span class="String">&quot;lib/sha1.js&quot;</span><span class="Function">&gt;</span><span class="Identifier">&lt;/</span><span class="Statement">script</span><span class="Identifier">&gt;</span>
+<span class="lnr"> 9 </span><span class="PreProc">    </span><span class="Function">&lt;</span><span class="Statement">script</span><span class="Function"> </span><span class="Type">type</span><span class="Function">=</span><span class="String">&quot;text/javascript&quot;</span><span class="Function">&gt;</span>
+<span class="lnr">10 </span>
+<span class="lnr">11 </span><span class="Special">      entropy = </span><span class="Operator">new</span><span class="Special"> Entropy</span>()<span class="Special">;</span>
+<span class="lnr">12 </span>
+<span class="lnr">13 </span><span class="Special">      entropy.isReadyListener</span>(<span class="Function">function</span>()<span class="Special"> </span><span class="Function">{</span>
+<span class="lnr">14 </span><span class="Special">        </span><span class="Keyword">window</span><span class="Special">.</span><span class="Keyword">alert</span>(<span class="Special">entropy.readHash</span>())<span class="Special">;</span>
+<span class="lnr">15 </span><span class="Special">        entropy.reset</span>()<span class="Special">;</span>
+<span class="lnr">16 </span><span class="Special">      </span><span class="Function">}</span>)<span class="Special">;</span>
+<span class="lnr">17 </span>
+<span class="lnr">18 </span><span class="Special">      entropy.enableKeyboardEntropy</span>()<span class="Special">;</span>
+<span class="lnr">19 </span><span class="Special">      entropy.setBitLength</span>(128)<span class="Special">;</span>
+<span class="lnr">20 </span><span class="Special">      entropy.setResolution</span>(0<span class="Special">.</span>5)<span class="Special">;</span>
+<span class="lnr">21 </span>
+<span class="lnr">22 </span><span class="Special">    </span><span class="Identifier">&lt;/</span><span class="Statement">script</span><span class="Identifier">&gt;</span>
+<span class="lnr">23 </span><span class="PreProc">  </span><span class="Identifier">&lt;/</span><span class="Statement">head</span><span class="Identifier">&gt;</span>
+<span class="lnr">24 </span>  <span class="Function">&lt;</span><span class="Statement">body</span><span class="Function">&gt;</span><span class="Identifier">&lt;/</span><span class="Statement">body</span><span class="Identifier">&gt;</span>
+<span class="lnr">25 </span><span class="Identifier">&lt;/</span><span class="Statement">html</span><span class="Identifier">&gt;</span>
+</pre>
+</blockquote>
+
 </body>
 </html>
